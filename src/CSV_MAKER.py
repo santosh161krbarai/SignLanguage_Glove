@@ -9,7 +9,7 @@
 # BAUD_RATE = 115200
 # CSV_FILE = 'sensor_data_alpha_"o"_250.csv'
 # MAX_RECORDS = 250
-# WRITE_INTERVAL = 80        # write CSV every 100 new entries
+# WRITE_INTERVAL = 80        # write CSV every 80 new entries
 
 # # === SETUP ===
 # log_queue = deque(maxlen=MAX_RECORDS)
@@ -31,10 +31,10 @@
 #         try:
 #             ser = serial.Serial(PORT, BAUD_RATE, timeout=1)
 #             time.sleep(2)  # allow ESP32 to reset
-#             print(f"\n📊 Serial connected on {PORT}. Logging started...")
+#             print(f"\n Serial connected on {PORT}. Logging started...")
 #             return ser
 #         except serial.SerialException:
-#             print(f"⚠️  Could not open {PORT}. Retrying in 2s...")
+#             print(f" Could not open {PORT}. Retrying in 2s...")
 #             time.sleep(2)
 
 # ser = open_serial()
@@ -82,14 +82,14 @@
 #                 entry_count = 0
 
 #         except serial.SerialException:
-#             print("⚠️  Serial disconnected. Pausing until device reconnects...")
+#             print("  Serial disconnected. Pausing until device reconnects...")
 #             ser.close()
 #             ser = open_serial()
 #         except ValueError:
 #             continue  # skip lines that can't be converted to float
 
 # except KeyboardInterrupt :
-#     print("\n🛑 Logging stopped by user. Saving CSV...")
+#     print("\n Logging stopped by user. Saving CSV...")
 #     with open(CSV_FILE, 'w', newline='') as file:
 #         writer = csv.writer(file)
 #         # writer.writerow(['Timestamp', 'IndexFlex', 'MidFlex', 'AccX', 'AccY', 'AccZ'])
@@ -97,16 +97,18 @@
 #         writer.writerows(log_queue)
 # finally:
 #     ser.close()
+
+
 import serial
 import csv
 import time
 from datetime import datetime
 from collections import deque
 
-# === SETTINGS ===
-PORT = '/dev/ttyUSB0'      # Update with your ESP32 port
+
+PORT = '/dev/ttyUSB0'      # connected ESP32 port
 BAUD_RATE = 115200
-CSV_FILE = 'sensor_data_alpha_"C_250.csv'
+CSV_FILE = 'sensor_data_alpha_"C"_250.csv'
 MAX_RECORDS = 250
 WRITE_INTERVAL = 80        # write CSV every 80 new entries
 
@@ -132,10 +134,10 @@ def open_serial():
         try:
             ser = serial.Serial(PORT, BAUD_RATE, timeout=1)
             time.sleep(2)  # allow ESP32 to reset
-            print(f"\n📊 Serial connected on {PORT}. Logging started...")
+            print(f"\n Serial connected on {PORT}. Logging started...")
             return ser
         except serial.SerialException:
-            print(f"⚠️  Could not open {PORT}. Retrying in 2s...")
+            print(f" Could not open {PORT}. Retrying in 2s...")
             time.sleep(2)
 
 ser = open_serial()
@@ -172,16 +174,16 @@ try:
                 entry_count = 0
 
         except serial.SerialException:
-            print("⚠️  Serial disconnected. Pausing until device reconnects...")
+            print(" Serial disconnected. Pausing until device reconnects...")
             ser.close()
             ser = open_serial()
         except ValueError:
             continue  # skip conversion errors
 
-    print(f"\n✅ Logging complete. {MAX_RECORDS} entries saved to '{CSV_FILE}'.")
+    print(f"\n Logging complete. {MAX_RECORDS} entries saved to '{CSV_FILE}'.")
 
 except KeyboardInterrupt:
-    print("\n🛑 Logging stopped by user.")
+    print("\n Logging stopped by user.")
 
 finally:
     # Always save before exit
@@ -190,4 +192,4 @@ finally:
         writer.writerow(['Timestamp', 'MidDown', 'MidUp'])
         writer.writerows(log_queue)
     ser.close()
-    print("💾 CSV file saved and serial closed.")
+    print("CSV file saved and serial closed.")
