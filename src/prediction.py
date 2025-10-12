@@ -4,7 +4,7 @@ import pandas as pd
 
 PORT = '/dev/ttyUSB0'
 BAUD_RATE = 115200
-MODEL_FILE = 'my_model.joblib'  # path to the trained model
+MODEL_FILE = 'my_model_newSensorData.joblib'  # path to the trained model
 
 # Load trained model
 model = joblib.load(MODEL_FILE)

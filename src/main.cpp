@@ -20,9 +20,9 @@ int baselineIndex = 0, baselineMiddle = 0;
 
 void setup() {
   Serial.begin(115200);
-  // Wire.begin();
+  Wire.begin();
 
-  // // Wake MPU
+  // Wake MPU
   // Wire.beginTransmission(MPU_ADDR);
   // Wire.write(0x6B);
   // Wire.write(0);
@@ -98,17 +98,17 @@ void loop() {
   float avgIndex = totalIndex / (float)FLEX_SAMPLES;
   float avgMiddle = totalMiddle / (float)FLEX_SAMPLES;
 
-  float angleIndex = map(avgIndex, baselineIndex, 4095, 0, 180);
-  float angleMiddle = map(avgMiddle, baselineMiddle, 4095, 0, 180);
+  float angleIndex = map(avgIndex, baselineIndex, 4095, 0, 1000);
+  float angleMiddle = map(avgMiddle, baselineMiddle, 4095, 0, 1000);
   angleIndex = angleIndex < 0 ? 0 : angleIndex;
   angleMiddle = angleMiddle < 0 ? 0 : angleMiddle;
 
   // === Send comma-separated output ===
   Serial.print(angleIndex, 2); Serial.print(",");
-  Serial.println(angleMiddle, 2);// Serial.print(",");
+  Serial.println(angleMiddle, 2); //Serial.print(",");
   // Serial.print(avgX, 2); Serial.print(",");
   // Serial.print(avgY, 2); Serial.print(",");
   // Serial.println(avgZ, 2);
 
-  delay(100);
+  delay(50);
 }

@@ -108,7 +108,7 @@ from collections import deque
 
 PORT = '/dev/ttyUSB0'      # connected ESP32 port
 BAUD_RATE = 115200
-CSV_FILE = 'sensor_data_alpha_"C"_250.csv'
+CSV_FILE = 'sensor_data_alpha_"C"_250_new_sensors.csv'
 MAX_RECORDS = 250
 WRITE_INTERVAL = 80        # write CSV every 80 new entries
 
@@ -143,7 +143,7 @@ def open_serial():
 ser = open_serial()
 
 print("Press Ctrl+C to stop.\n")
-print("{:<20} {:<10} {:<10}".format("Timestamp", "MidDown", "MidUp"))
+print("{:<10} {:<10}".format("MidDown", "MidUp"))
 
 try:
     while total_entries < MAX_RECORDS:
@@ -157,19 +157,19 @@ try:
                 continue  # skip invalid line
 
             down_flex, up_flex = map(float, parts)
-            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            # timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-            log_queue.append((timestamp, down_flex, up_flex))
+            log_queue.append((down_flex, up_flex))
             entry_count += 1
             total_entries += 1
 
-            print("{:<20} {:<10.2f} {:<10.2f}".format(timestamp, down_flex, up_flex))
+            print(" {:<10.2f} {:<10.2f}".format( down_flex, up_flex))
 
             # Write CSV every WRITE_INTERVAL entries
             if entry_count >= WRITE_INTERVAL or total_entries == MAX_RECORDS:
                 with open(CSV_FILE, 'w', newline='') as file:
                     writer = csv.writer(file)
-                    writer.writerow(['Timestamp', 'MidDown', 'MidUp'])
+                    writer.writerow(['MidDown', 'MidUp'])
                     writer.writerows(log_queue)
                 entry_count = 0
 
@@ -189,7 +189,7 @@ finally:
     # Always save before exit
     with open(CSV_FILE, 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Timestamp', 'MidDown', 'MidUp'])
+        writer.writerow([ 'MidDown', 'MidUp'])
         writer.writerows(log_queue)
     ser.close()
     print("CSV file saved and serial closed.")

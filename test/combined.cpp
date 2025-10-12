@@ -9,8 +9,8 @@ float accXBuf[FILTER_SIZE], accYBuf[FILTER_SIZE], accZBuf[FILTER_SIZE];
 int bufIndex = 0;
 
 // === Flex sensor pins ===
-const int FLEX_INDEX_PIN = 4;    // ADC1 pins on ESP32
-const int FLEX_MIDDLE_PIN = 14;
+const int FLEX_INDEX_PIN = 14;    
+const int FLEX_MIDDLE_PIN = 13;
 
 const int FLEX_SAMPLES = 10;      // Flex moving average
 int flexIndexBuf[FLEX_SAMPLES], flexMiddleBuf[FLEX_SAMPLES];
@@ -22,7 +22,6 @@ void setup() {
   Serial.begin(115200);
   Wire.begin();
 
-  // Wake MPU
   Wire.beginTransmission(MPU_ADDR);
   Wire.write(0x6B);
   Wire.write(0);
@@ -98,8 +97,8 @@ void loop() {
   float avgIndex = totalIndex / (float)FLEX_SAMPLES;
   float avgMiddle = totalMiddle / (float)FLEX_SAMPLES;
 
-  float angleIndex = map(avgIndex, baselineIndex, 4095, 0, 180);
-  float angleMiddle = map(avgMiddle, baselineMiddle, 4095, 0, 180);
+  float angleIndex = map(avgIndex, baselineIndex, 4095, 0, 1000);
+  float angleMiddle = map(avgMiddle, baselineMiddle, 4095, 0, 1000);
   angleIndex = angleIndex < 0 ? 0 : angleIndex;
   angleMiddle = angleMiddle < 0 ? 0 : angleMiddle;
 
