@@ -70,9 +70,9 @@ void loop() {
   avgGyroZ /= FILTER_SIZE;
 
 
-  // Serial.print(avgAccX, 2); Serial.print(", ");
-  // Serial.print(avgAccY, 2); Serial.print(", ");
-  // Serial.print(avgAccZ, 2); Serial.print(", ");
+  Serial.print(avgAccX, 2); Serial.print(", ");
+  Serial.print(avgAccY, 2); Serial.print(", ");
+  Serial.print(avgAccZ, 2); Serial.print(", ");
   // Serial.print(avgTemp, 2); Serial.print(", ");
   Serial.print((avgGyroX<0 && avgGyroX>-1)? 0 : avgGyroX,0); Serial.print(", ");
   Serial.print((avgGyroY<0 && avgGyroY>-1)? 0 : avgGyroY,0); Serial.print(", ");

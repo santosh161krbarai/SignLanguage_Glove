@@ -1,25 +1,27 @@
 #include <Wire.h>
 #include <Arduino.h>
 
-
+// ===========================
 // FLEX SENSOR CONFIGURATION
+// ===========================
+// Assign your sensor pins here
+// (Use ADC1 pins for stability)
 
+const int PIN_INDEX_UP      = 36; 
+const int PIN_INDEX_LOW     = 39;
 
-const int PIN_INDEX_UP      = 14; 
-const int PIN_INDEX_LOW     = 27;
+const int PIN_MIDDLE_UP     = 13;
+const int PIN_MIDDLE_LOW    = 14;
 
-const int PIN_MIDDLE_UP     = 25;
-const int PIN_MIDDLE_LOW    = 26;
+const int PIN_RING_UP       = 32;
+const int PIN_RING_LOW      = 33;
 
-const int PIN_RING_UP       = 33;
-const int PIN_RING_LOW      = 32;
+const int PIN_THUMB         = 34;   // One sensor only
+const int PIN_PINKY         = 35;   // One sensor only
 
-const int PIN_THUMB         = 13;   
-const int PIN_PINKY         = 35;   
-
-
+// ===========================
 // MOVING AVERAGE SETTINGS
-
+// ===========================
 const int FLEX_SAMPLES = 10;
 
 // Structure for each flex sensor
@@ -31,15 +33,16 @@ struct FlexSensor {
   int baseline = 0;
 };
 
-// Createing objects for each sensor
+// Create objects for each sensor
 FlexSensor indexUp, indexLow;
 FlexSensor middleUp, middleLow;
 FlexSensor ringUp, ringLow;
 FlexSensor thumbFlex, pinkyFlex;
 
 
-
+// ===========================
 // FLEX SENSOR FUNCTIONS
+// ===========================
 
 // --- Initialize one sensor (calibration + buffer fill) ---
 void initFlex(FlexSensor &fs, int pin) {
@@ -69,7 +72,7 @@ float readFlex(FlexSensor &fs) {
 
   float avg = fs.total / (float)FLEX_SAMPLES;
 
-  // Convert to bend angle (0–1000 scale) (0 to 180 degrees actually)
+  // Convert to bend angle (0–1000 scale)
   float angle = map(avg, fs.baseline, 4095, 0, 1000);
   if (angle < 0) angle = 0;
 
@@ -77,6 +80,9 @@ float readFlex(FlexSensor &fs) {
 }
 
 
+// ===========================
+// SETUP
+// ===========================
 void setup() {
   Serial.begin(115200);
 
@@ -98,6 +104,9 @@ void setup() {
 }
 
 
+// ===========================
+// MAIN LOOP
+// ===========================
 void loop() {
 
   float idxUp   = readFlex(indexUp);
